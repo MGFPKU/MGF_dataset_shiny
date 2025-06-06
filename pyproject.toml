@@ -1,0 +1,11 @@
+[project]
+name = "mgb-shiny"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "polars>=1.30.0",
+    "requests>=2.32.3",
+    "shiny>=1.4.0",
+]
