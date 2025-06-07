@@ -1,5 +1,4 @@
 from htmltools._core import Tag
-from htmltools import tags
 from shiny import App, ui, reactive, render
 import os
 import polars as pl
