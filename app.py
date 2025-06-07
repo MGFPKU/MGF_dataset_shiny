@@ -11,24 +11,27 @@ from details import render_detail
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-REPO = "kv9898/MGF_dataset"
+REPO = "MGFPKU/MGF_dataset_scraping"
 FILE_PATH = "data/data.csv"
 BRANCH = "main"
 
 
 def fetch_data():
-    url = f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{FILE_PATH}"
-    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-    res = requests.get(url, headers=headers)
+    headers = {
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3.raw",
+    }
+
+    api_url = f"https://api.github.com/repos/{REPO}/contents/{FILE_PATH}?ref={BRANCH}"
+    res = requests.get(api_url, headers=headers)
     if res.status_code != 200:
-        raise RuntimeError(f"Failed to fetch file: {res.status_code}")
+        raise RuntimeError(f"Failed to fetch file: {res.status_code}\n{res.text}")
     return pl.read_csv(io.StringIO(res.text))
 
 
 raw_df = fetch_data()
 df = (
-    raw_df
-    .with_columns(
+    raw_df.with_columns(
         pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
     )
     .sort("parsed_time", descending=True)
