@@ -25,7 +25,14 @@ def fetch_data():
     return pl.read_csv(io.StringIO(res.text))
 
 
-df = fetch_data()
+df = (
+    fetch_data()
+    .with_columns(
+        pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
+    )
+    .sort("parsed_time", descending=True)
+    .drop("parsed_time")
+)
 
 # fix region tags
 regions: list[str] = df["经济体"].drop_nulls().to_list()
