@@ -31,7 +31,7 @@ df = (
         pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
     )
     .sort("parsed_time", descending=True)
-    .drop("parsed_time")
+    .drop("parsed_time", "序号")
 )
 
 # fix region tags
