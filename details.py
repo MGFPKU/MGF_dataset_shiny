@@ -69,7 +69,7 @@ def render_detail(row: pl.DataFrame) -> Tag:
                 background-color: rgb(11, 82, 61);
             }
         """),
-        ui.div(r[1], class_="detail-title"),
+        ui.div(r[0], class_="detail-title"),
         ui.div(
             *[
                 ui.div(
@@ -80,20 +80,20 @@ def render_detail(row: pl.DataFrame) -> Tag:
                 )
                 for i, (label, value) in enumerate(
                     [
-                        ("经济体", r[4]),
-                        ("时间", r[2]),
-                        ("政策类型", r[3]),
+                        ("经济体", r[3]),
+                        ("时间", r[1]),
+                        ("政策类型", r[2]),
                         ("发布主体", r[4]),
-                        ("关键词", r[6] if r[6] else ""),
+                        ("关键词", r[5] if r[5] else ""),
                     ]
                 )
             ],
             class_="detail-meta",
         ),
-        ui.div(r[8] if len(r) > 8 else "暂无详细描述内容。", class_="detail-text"),
+        ui.div(r[7] if len(r) > 7 else "暂无详细描述内容。", class_="detail-text"),
         ui.div(
             ui.input_action_button("back", "返回列表", class_="btn"),
-            ui.a("详情链接", href=r[7], target="_blank", class_="btn"),
+            ui.a("详情链接", href=r[6], target="_blank", class_="btn"),
             class_="detail-buttons",
         ),
     )
