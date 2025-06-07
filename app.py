@@ -25,13 +25,14 @@ def fetch_data():
     return pl.read_csv(io.StringIO(res.text))
 
 
+raw_df = fetch_data()
 df = (
-    fetch_data()
+    raw_df
     .with_columns(
         pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
     )
     .sort("parsed_time", descending=True)
-    .drop("parsed_time", "序号")
+    .drop(["parsed_time", "序号", raw_df.columns[-1]])
 )
 
 # fix region tags
