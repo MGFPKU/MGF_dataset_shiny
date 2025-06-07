@@ -81,6 +81,18 @@ Or more conveniently, install the `shiny` extension to Positron/VS Code and pres
 
 ---
 
+## 📚 Citation
+
+If you use the MGF dataset in your research or writing, please cite us as follows:
+
+**Macro and Green Finance Lab, Peking University (MGF@PKU)**  
+"Climate-related Policy Tracker for Central Banks and Regulators"  
+[https://mgflab.nsd.pku.edu.cn/MGFsjk/zczz/index.htm](https://mgflab.nsd.pku.edu.cn/MGFsjk/zczz/index.htm), 2025.
+
+<!-- > For formal citation formats (APA, BibTeX, etc.), see the linked page above. -->
+
+---
+
 ## 📁 Data Source
 
 The dataset is hosted in a *private* public GitHub repository along with our scraping scripts. We apologize for the inconvenience. But the dataset provided through the app is updated in real-time and contains most information available on the original source.
