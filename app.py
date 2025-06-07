@@ -173,7 +173,7 @@ def server(input, output, session):
     @render.ui  # table
     def table_ui() -> Tag:
         # Rearrange and format data
-        data = (
+        data: pl.DataFrame = (
             filtered()
             .select((["经济体", "政策动态", "政策类型", "发布主体", "时间"]))
             .with_columns(
