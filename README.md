@@ -18,6 +18,7 @@ This app visualizes a curated dataset of climate and sustainability-related regu
 - 📥 Export of filtered results (CSV)
 
 Powered by:
+
 - [`shiny`](https://shiny.posit.co/py/) for interactivity
 - [`polars`](https://pola.rs/) for fast data wrangling
 - GitHub API for real-time data retrieval
@@ -57,7 +58,7 @@ uv sync
 ### 3. Authentication
 
 > ⚠️ We do not publish a GitHub token in this repo.
-If you need access for development or testing, contact the maintainers for a personal access token (PAT) with read-only access to the dataset repository.
+> If you need access for development or testing, contact the maintainers for a personal access token (PAT) with read-only access to the dataset repository.
 
 You’ll need to set the token in a `.env` file like:
 
@@ -95,13 +96,12 @@ If you use the MGF dataset in your research or writing, please cite us as follow
 
 ## 📁 Data Source
 
-The dataset is hosted in a *private* public GitHub repository along with our scraping scripts. We apologize for the inconvenience. But the dataset provided through the app is updated in real-time and contains most information available on the original source.
+The dataset is hosted in a _private_ public GitHub repository along with our scraping scripts. We apologize for the inconvenience. But the dataset provided through the app is updated in real-time and contains most information available on the original source.
 
 ---
 
 ## 🏛️ Credits
 
+Developed by Dianyi Yang ([@kv9898](https://github.com/kv9898)) for the **[Macro and Green Finance Lab](https://mgflab.nsd.pku.edu.cn/en/AboutUs/OurTeam/index.htm)** at Peking University (MGF@PKU).
 
-Developed by the **[Macro and Green Finance Lab](https://mgflab.nsd.pku.edu.cn/en/AboutUs/OurTeam/index.htm)**, Peking University (MGF@PKU).
-
-For academic use, adaptation, or inquiries, please contact us directly.
+If you use or adapt this project for academic or institutional purposes, please **cite the dataset** accordingly and feel free to **reach out for collaboration or inquiries**.
