@@ -7,7 +7,7 @@ import requests
 
 from table import output_paginated_table
 from details import render_detail
-from download import download_tab, GOOGLE_SCRIPT_URL
+from download import download_tab, send_to_email
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -242,33 +242,48 @@ def server(input, output, session):
     def nrow():
         return f"当前筛选结果：{filtered().shape[0]} 条记录"
 
-    @render.download(filename="央行与监管机构政策追踪.csv")
-    async def download_csv():
+    @reactive.effect
+    @reactive.event(input.send_csv)
+    async def _():
         email = input.user_email()
         inst = input.user_inst()
 
-        # ✅ Save info in browser localStorage
+        ## ✅ Save info in browser localStorage
         await session.send_custom_message("storeUserInfo", {
             "email": email,
             "inst": inst
         })
-        yield filtered().write_csv(
+        data_csv: str = filtered().write_csv(
             include_bom=True,
             separator=",",
             quote_char='"',
             quote_style="non_numeric",
             null_value="",
         )  # Returns as string
+        response = await send_to_email(email, inst, "csv", data_csv)
+        ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
 
-    @render.download(filename="央行与监管机构政策追踪.xlsx")
-    async def download_excel():
-        # Step 1: Write Excel to in-memory buffer
+    @reactive.effect
+    @reactive.event(input.send_excel)
+    async def _():
+        # Step 1: Get user email and institution
+        email = input.user_email()
+        inst = input.user_inst()
+
+        ## ✅ Save info in browser localStorage
+        await session.send_custom_message("storeUserInfo", {
+            "email": email,
+            "inst": inst
+        })
+
+        # Step 2: Write Excel to in-memory buffer
         buffer = io.BytesIO()
         filtered().write_excel(buffer)
         buffer.seek(0)
 
-        # Step 2: Yield binary content for Shiny to stream to user
-        yield buffer.getvalue()
+        # Step 3: Send Excel to email
+        await send_to_email(email, inst, "xlsx", buffer.getvalue())
+        ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
 
     @reactive.Effect
     def on_click():
