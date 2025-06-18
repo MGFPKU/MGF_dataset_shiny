@@ -130,7 +130,17 @@ app_ui = ui.page_fluid(
                     fill: #333;
                 }
             """),
-            ui.output_ui(id="table_ui"),
+            ui.navset_hidden(
+                ui.nav_panel(
+                    "table_panel",
+                    ui.output_ui(id="table_ui"),
+                ),
+                ui.nav_panel(
+                    "download_panel",
+                    "test",
+                ),
+                id = "table_download",
+            ),
         ),
         ui.nav_panel("detail_view", ui.output_ui("detail_ui")),
         id="view",
