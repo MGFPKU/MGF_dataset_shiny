@@ -43,31 +43,6 @@ def render_detail(row: pl.DataFrame) -> Tag:
                 white-space: pre-wrap;
                 margin-bottom: 2em;
             }
-
-            .detail-buttons {
-                display: flex;
-                gap: 1em;
-                margin-top: 1em;
-            }
-
-            .detail-buttons a,
-            .detail-buttons button {
-                padding: 0.75em 2em;
-                font-size: 1em;
-                border: none;
-                border-radius: 999px;
-                cursor: pointer;
-                text-decoration: none;
-                color: white;
-                background-color: rgb(13, 97, 72);
-                transition: background-color 0.3s;
-            }
-
-            .detail-buttons a:hover,
-            .detail-buttons button:hover {
-                color: white;
-                background-color: rgb(11, 82, 61);
-            }
         """),
         ui.div(r[0], class_="detail-title"),
         ui.div(
