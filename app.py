@@ -282,7 +282,7 @@ def server(input, output, session):
         buffer.seek(0)
 
         # Step 3: Send Excel to email
-        await send_to_email(email, inst, "xlsx", buffer.getvalue())
+        response = await send_to_email(email, inst, "xlsx", buffer.getvalue())
         ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
 
     @reactive.Effect
