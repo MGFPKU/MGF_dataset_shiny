@@ -210,6 +210,16 @@ def server(input, output, session):
             null_value="",
         )  # Returns as string
 
+    @render.download(filename="央行与监管机构政策追踪.xlsx")
+    async def download_excel():
+        # Step 1: Write Excel to in-memory buffer
+        buffer = io.BytesIO()
+        filtered().write_excel(buffer)
+        buffer.seek(0)
+
+        # Step 2: Yield binary content for Shiny to stream to user
+        yield buffer.getvalue()
+
     @reactive.Effect
     def on_click():
         if input.mytable():
