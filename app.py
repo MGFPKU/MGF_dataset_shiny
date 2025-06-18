@@ -71,8 +71,8 @@ app_ui = ui.page_fluid(
                         class_="form-label",
                         style="visibility: hidden; height: 1em;",
                     ),
-                    ui.download_button(
-                        "download_csv",
+                    ui.input_action_button(
+                        "download",
                         "",
                         class_="download-icon",
                         icon=ui.tags.svg(
@@ -113,7 +113,7 @@ app_ui = ui.page_fluid(
                     background-color: #f0f0f0;
                 }
                 .download-icon:hover::after {
-                    content: '下载结果(CSV)';
+                    content: '下载结果';
                     position: absolute;
                     bottom: -2em;
                     background-color: #bbb;
@@ -129,8 +129,51 @@ app_ui = ui.page_fluid(
                     height: 20px;
                     fill: #333;
                 }
+                
+                .detail-buttons {
+                    display: flex;
+                    gap: 1em;
+                    margin-top: 1em;
+                }
+
+                .detail-buttons a,
+                .detail-buttons button {
+                    padding: 0.75em 2em;
+                    font-size: 1em;
+                    border: none;
+                    border-radius: 999px;
+                    cursor: pointer;
+                    text-decoration: none;
+                    color: white;
+                    background-color: rgb(13, 97, 72);
+                    transition: background-color 0.3s;
+                }
+
+                .detail-buttons a:hover,
+                .detail-buttons button:hover {
+                    color: white;
+                    background-color: rgb(11, 82, 61);
+                }
             """),
-            ui.output_ui(id="table_ui"),
+            ui.navset_hidden(
+                ui.nav_panel(
+                    "table_panel",
+                    ui.output_ui(id="table_ui"),
+                ),
+                ui.nav_panel(
+                    "download_panel",
+                    ui.output_text(id="nrow"),
+                    ui.div(
+                        ui.layout_columns(
+                            ui.download_button(id="download_csv", label="下载 CSV"),
+                            ui.download_button(id="download_excel", label="下载 Excel"),
+                            ui.input_action_button("back1", "返回列表")
+                        ),
+                        class_="detail-buttons",
+                    )
+                ),
+                id = "table_download",
+            ),
         ),
         ui.nav_panel("detail_view", ui.output_ui("detail_ui")),
         id="view",
@@ -200,6 +243,15 @@ def server(input, output, session):
         row = df.filter(pl.col("政策动态") == focused_policy())
         return render_detail(row)
 
+    @reactive.effect
+    @reactive.event(input.download)
+    async def _():
+        ui.update_navs("table_download", selected="download_panel")
+
+    @render.text
+    def nrow():
+        return f"当前筛选结果：{filtered().shape[0]} 条记录"
+
     @render.download(filename="央行与监管机构政策追踪.csv")
     async def download_csv():
         yield filtered().write_csv(
@@ -209,6 +261,16 @@ def server(input, output, session):
             quote_style="non_numeric",
             null_value="",
         )  # Returns as string
+
+    @render.download(filename="央行与监管机构政策追踪.xlsx")
+    async def download_excel():
+        # Step 1: Write Excel to in-memory buffer
+        buffer = io.BytesIO()
+        filtered().write_excel(buffer)
+        buffer.seek(0)
+
+        # Step 2: Yield binary content for Shiny to stream to user
+        yield buffer.getvalue()
 
     @reactive.Effect
     def on_click():
@@ -226,5 +288,9 @@ def server(input, output, session):
     async def _():
         ui.update_navs("view", selected="tabview")
 
+    @reactive.effect
+    @reactive.event(input.back1)
+    async def _():
+        ui.update_navs("table_download", selected="table_panel")
 
 app = App(app_ui, server, debug=False)
