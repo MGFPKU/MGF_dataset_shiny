@@ -7,6 +7,7 @@ import requests
 
 from table import output_paginated_table
 from details import render_detail
+from download import download_tab
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -160,18 +161,7 @@ app_ui = ui.page_fluid(
                     "table_panel",
                     ui.output_ui(id="table_ui"),
                 ),
-                ui.nav_panel(
-                    "download_panel",
-                    ui.output_text(id="nrow"),
-                    ui.div(
-                        ui.layout_columns(
-                            ui.download_button(id="download_csv", label="下载 CSV"),
-                            ui.download_button(id="download_excel", label="下载 Excel"),
-                            ui.input_action_button("back1", "返回列表")
-                        ),
-                        class_="detail-buttons",
-                    )
-                ),
+                download_tab,
                 id = "table_download",
             ),
         ),
@@ -254,6 +244,14 @@ def server(input, output, session):
 
     @render.download(filename="央行与监管机构政策追踪.csv")
     async def download_csv():
+        email = input.user_email()
+        inst = input.user_inst()
+
+        # ✅ Save info in browser localStorage
+        await session.send_custom_message("storeUserInfo", {
+            "email": email,
+            "inst": inst
+        })
         yield filtered().write_csv(
             include_bom=True,
             separator=",",
@@ -293,4 +291,4 @@ def server(input, output, session):
     async def _():
         ui.update_navs("table_download", selected="table_panel")
 
-app = App(app_ui, server, debug=False)
+app = App(app_ui, server, debug=True)
