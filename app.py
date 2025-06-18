@@ -252,8 +252,7 @@ def server(input, output, session):
             quote_style="non_numeric",
             null_value="",
         )  # Returns as string
-        response = await send_to_email(input, session, "csv", data_csv)
-        ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
+        await send_to_email(input, session, "csv", data_csv)
 
     @reactive.effect
     @reactive.event(input.send_excel)
@@ -264,8 +263,7 @@ def server(input, output, session):
         buffer.seek(0)
 
         # Step 2: Send Excel to email
-        response = await send_to_email(input, session, "xlsx", buffer.getvalue())
-        ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
+        await send_to_email(input, session, "xlsx", buffer.getvalue())
 
     @reactive.Effect
     def on_click():

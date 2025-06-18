@@ -1,11 +1,11 @@
 
 from httpx._models import Response
 
-
 from shiny import ui
 import os
 import httpx
 import base64
+import re
 
 GOOGLE_SCRIPT_URL: str | None = os.getenv("GOOGLE_SCRIPT_URL")
 
@@ -49,11 +49,23 @@ download_tab = ui.nav_panel(
                     """)
                 )
 
-async def send_to_email(input, session, fmt: str, data: bytes | str) -> Response:
-    email: str = input.user_email()
-    inst: str = input.user_inst()
+EMAIL_REGEX = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w{2,}$")
 
-    ## ✅ Save info in browser localStorage
+async def send_to_email(input, session, fmt: str, data: bytes | str):
+    email: str = input.user_email().strip()
+    inst: str = input.user_inst().strip()
+
+    # Validate email
+    if not EMAIL_REGEX.match(email):
+        ui.notification_show("📮 无效的邮箱地址，请检查输入。", type="error")
+        return
+
+    # Validate institution (optional, but recommended)
+    if len(inst) < 2:
+        ui.notification_show("🏢 请输入机构名称（至少两个字符）。", type="error")
+        return
+
+    # Save info in browser localStorage
     await session.send_custom_message("storeUserInfo", {
         "email": email,
         "inst": inst
@@ -77,4 +89,8 @@ async def send_to_email(input, session, fmt: str, data: bytes | str) -> Response
     async with httpx.AsyncClient() as client:
         if not GOOGLE_SCRIPT_URL:
             raise ValueError("GOOGLE_SCRIPT_URL environment variable is not set.")
-        return await client.post(GOOGLE_SCRIPT_URL, json=payload)
+        response: Response =  await client.post(GOOGLE_SCRIPT_URL, json=payload)
+        if response.status_code == 302:
+            _ = ui.notification_show(f"📬 数据已发送至邮箱", type="message")
+        else:
+            _ = ui.notification_show(f"❌ 数据发送失败: {response}", type="error")
