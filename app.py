@@ -137,7 +137,11 @@ app_ui = ui.page_fluid(
                 ),
                 ui.nav_panel(
                     "download_panel",
-                    "test",
+                    ui.layout_columns(
+                        ui.download_button(id="download_csv", label="下载 CSV"),
+                        ui.download_button(id="download_excel", label="下载 Excel"),
+                        ui.input_action_button("back1", "返回列表", class_="btn")
+                    ),
                 ),
                 id = "table_download",
             ),
@@ -251,5 +255,9 @@ def server(input, output, session):
     async def _():
         ui.update_navs("view", selected="tabview")
 
+    @reactive.effect
+    @reactive.event(input.back1)
+    async def _():
+        ui.update_navs("table_download", selected="table_panel")
 
 app = App(app_ui, server, debug=False)
