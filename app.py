@@ -7,6 +7,7 @@ import requests
 
 from table import output_paginated_table
 from details import render_detail
+from download import download_tab, send_to_email
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -160,18 +161,7 @@ app_ui = ui.page_fluid(
                     "table_panel",
                     ui.output_ui(id="table_ui"),
                 ),
-                ui.nav_panel(
-                    "download_panel",
-                    ui.output_text(id="nrow"),
-                    ui.div(
-                        ui.layout_columns(
-                            ui.download_button(id="download_csv", label="下载 CSV"),
-                            ui.download_button(id="download_excel", label="下载 Excel"),
-                            ui.input_action_button("back1", "返回列表")
-                        ),
-                        class_="detail-buttons",
-                    )
-                ),
+                download_tab,
                 id = "table_download",
             ),
         ),
@@ -250,27 +240,30 @@ def server(input, output, session):
 
     @render.text
     def nrow():
-        return f"当前筛选结果：{filtered().shape[0]} 条记录"
+        return f"将通过邮件当前筛选结果，共 {filtered().shape[0]} 条记录"
 
-    @render.download(filename="央行与监管机构政策追踪.csv")
-    async def download_csv():
-        yield filtered().write_csv(
+    @reactive.effect
+    @reactive.event(input.send_csv)
+    async def _():
+        data_csv: str = filtered().write_csv(
             include_bom=True,
             separator=",",
             quote_char='"',
             quote_style="non_numeric",
             null_value="",
         )  # Returns as string
+        await send_to_email(input, session, "csv", data_csv)
 
-    @render.download(filename="央行与监管机构政策追踪.xlsx")
-    async def download_excel():
+    @reactive.effect
+    @reactive.event(input.send_excel)
+    async def _():
         # Step 1: Write Excel to in-memory buffer
         buffer = io.BytesIO()
         filtered().write_excel(buffer)
         buffer.seek(0)
 
-        # Step 2: Yield binary content for Shiny to stream to user
-        yield buffer.getvalue()
+        # Step 2: Send Excel to email
+        await send_to_email(input, session, "xlsx", buffer.getvalue())
 
     @reactive.Effect
     def on_click():
@@ -293,4 +286,4 @@ def server(input, output, session):
     async def _():
         ui.update_navs("table_download", selected="table_panel")
 
-app = App(app_ui, server, debug=False)
+app = App(app_ui, server, debug=True)
