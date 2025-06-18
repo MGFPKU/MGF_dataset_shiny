@@ -137,11 +137,14 @@ app_ui = ui.page_fluid(
                 ),
                 ui.nav_panel(
                     "download_panel",
-                    ui.layout_columns(
-                        ui.download_button(id="download_csv", label="下载 CSV"),
-                        ui.download_button(id="download_excel", label="下载 Excel"),
-                        ui.input_action_button("back1", "返回列表", class_="btn")
-                    ),
+                    ui.div(
+                        ui.layout_columns(
+                            ui.download_button(id="download_csv", label="下载 CSV"),
+                            ui.download_button(id="download_excel", label="下载 Excel"),
+                            ui.input_action_button("back1", "返回列表")
+                        ),
+                        class_="detail-buttons",
+                    )
                 ),
                 id = "table_download",
             ),
