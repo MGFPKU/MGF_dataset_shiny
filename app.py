@@ -71,8 +71,8 @@ app_ui = ui.page_fluid(
                         class_="form-label",
                         style="visibility: hidden; height: 1em;",
                     ),
-                    ui.download_button(
-                        "download_csv",
+                    ui.input_action_button(
+                        "download",
                         "",
                         class_="download-icon",
                         icon=ui.tags.svg(
@@ -113,7 +113,7 @@ app_ui = ui.page_fluid(
                     background-color: #f0f0f0;
                 }
                 .download-icon:hover::after {
-                    content: '下载结果(CSV)';
+                    content: '下载结果';
                     position: absolute;
                     bottom: -2em;
                     background-color: #bbb;
@@ -209,6 +209,11 @@ def server(input, output, session):
             return ui.markdown("⚠️ 未找到政策详情。")
         row = df.filter(pl.col("政策动态") == focused_policy())
         return render_detail(row)
+
+    @reactive.effect
+    @reactive.event(input.download)
+    async def _():
+        ui.update_navs("table_download", selected="download_panel")
 
     @render.download(filename="央行与监管机构政策追踪.csv")
     async def download_csv():
