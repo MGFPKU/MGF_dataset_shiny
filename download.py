@@ -1,5 +1,8 @@
 
 from shiny import ui
+import os
+
+GOOGLE_SCRIPT_URL: str | None = os.getenv("GOOGLE_SCRIPT_URL")
 
 download_tab = ui.nav_panel(
                     "download_panel",

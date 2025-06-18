@@ -7,7 +7,7 @@ import requests
 
 from table import output_paginated_table
 from details import render_detail
-from download import download_tab
+from download import download_tab, GOOGLE_SCRIPT_URL
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
