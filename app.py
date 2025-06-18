@@ -245,14 +245,6 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.send_csv)
     async def _():
-        email = input.user_email()
-        inst = input.user_inst()
-
-        ## ✅ Save info in browser localStorage
-        await session.send_custom_message("storeUserInfo", {
-            "email": email,
-            "inst": inst
-        })
         data_csv: str = filtered().write_csv(
             include_bom=True,
             separator=",",
@@ -260,29 +252,19 @@ def server(input, output, session):
             quote_style="non_numeric",
             null_value="",
         )  # Returns as string
-        response = await send_to_email(email, inst, "csv", data_csv)
+        response = await send_to_email(input, session, "csv", data_csv)
         ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
 
     @reactive.effect
     @reactive.event(input.send_excel)
     async def _():
-        # Step 1: Get user email and institution
-        email = input.user_email()
-        inst = input.user_inst()
-
-        ## ✅ Save info in browser localStorage
-        await session.send_custom_message("storeUserInfo", {
-            "email": email,
-            "inst": inst
-        })
-
-        # Step 2: Write Excel to in-memory buffer
+        # Step 1: Write Excel to in-memory buffer
         buffer = io.BytesIO()
         filtered().write_excel(buffer)
         buffer.seek(0)
 
-        # Step 3: Send Excel to email
-        response = await send_to_email(email, inst, "xlsx", buffer.getvalue())
+        # Step 2: Send Excel to email
+        response = await send_to_email(input, session, "xlsx", buffer.getvalue())
         ui.notification_show(f"📬 文件已发送至邮箱: {response}", type="message")
 
     @reactive.Effect

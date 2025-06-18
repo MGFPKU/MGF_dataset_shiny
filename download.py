@@ -49,7 +49,16 @@ download_tab = ui.nav_panel(
                     """)
                 )
 
-async def send_to_email(email: str, inst: str, fmt: str, data: bytes | str) -> Response:
+async def send_to_email(input, session, fmt: str, data: bytes | str) -> Response:
+    email: str = input.user_email()
+    inst: str = input.user_inst()
+
+    ## ✅ Save info in browser localStorage
+    await session.send_custom_message("storeUserInfo", {
+        "email": email,
+        "inst": inst
+    })
+    
     if fmt == "xlsx":
         if not isinstance(data, bytes):
             raise ValueError("Excel format requires binary data")
