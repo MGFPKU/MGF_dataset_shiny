@@ -137,6 +137,7 @@ app_ui = ui.page_fluid(
                 ),
                 ui.nav_panel(
                     "download_panel",
+                    ui.output_text(id="nrow"),
                     ui.div(
                         ui.layout_columns(
                             ui.download_button(id="download_csv", label="下载 CSV"),
@@ -221,6 +222,10 @@ def server(input, output, session):
     @reactive.event(input.download)
     async def _():
         ui.update_navs("table_download", selected="download_panel")
+
+    @render.text
+    def nrow():
+        return f"当前筛选结果：{filtered().shape[0]} 条记录"
 
     @render.download(filename="央行与监管机构政策追踪.csv")
     async def download_csv():
