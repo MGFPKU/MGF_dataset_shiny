@@ -11,9 +11,10 @@ GOOGLE_SCRIPT_URL: str | None = os.getenv("GOOGLE_SCRIPT_URL")
 
 download_tab = ui.nav_panel(
                     "download_panel",
+                    ui.HTML("请填写您的机构名称和邮箱，以便我们通过邮件发送所选数据：<br><br>"),
+                    ui.input_text("user_inst", "机构名称:", placeholder="请输入机构名称"),
+                    ui.input_text("user_email", "邮箱:", placeholder="请输入邮箱"),
                     ui.output_text(id="nrow"),
-                    ui.input_text("user_inst", "机构名称", placeholder="请输入机构名称"),
-                    ui.input_text("user_email", "邮箱", placeholder="请输入邮箱"),
                     ui.div(
                         ui.layout_columns(
                             ui.input_action_button(id="send_csv", label="发送 CSV"),
