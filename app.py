@@ -62,7 +62,7 @@ app_ui = ui.page_fluid(
                     "year",
                     "年份",
                     choices=["全部"]
-                    + sorted(df["时间"].str.slice(3, 4).unique().to_list()),
+                    + sorted(df["时间"].str.slice(3, 4).unique().to_list(), reverse=True),
                 ),
                 ui.input_text(id="keyword", label="关键词", placeholder="请输入关键词"),
                 ui.div(
