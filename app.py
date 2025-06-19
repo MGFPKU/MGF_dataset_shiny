@@ -286,4 +286,4 @@ def server(input, output, session):
     async def _():
         ui.update_navs("table_download", selected="table_panel")
 
-app = App(app_ui, server, debug=True)
+app = App(app_ui, server, debug=False)
