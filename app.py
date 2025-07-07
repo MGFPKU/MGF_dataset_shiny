@@ -34,6 +34,7 @@ df = (
     raw_df.with_columns(
         pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
     )
+    .reverse()
     .sort("parsed_time", descending=True)
     .drop(["parsed_time", "新闻链接","备注"])
 )
