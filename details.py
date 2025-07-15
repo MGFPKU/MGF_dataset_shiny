@@ -23,7 +23,7 @@ def render_detail(row: pl.DataFrame) -> Tag:
                 padding: 1em;
                 border-radius: 0.5em;
                 margin-bottom: 1.5em;
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
 
             .meta-item {
@@ -38,7 +38,7 @@ def render_detail(row: pl.DataFrame) -> Tag:
             }
 
             .detail-text {
-                font-size: 1rem;
+                font-size: 1.25rem;
                 line-height: 1.8;
                 white-space: pre-wrap;
                 margin-bottom: 2em;
