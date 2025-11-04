@@ -13,5 +13,7 @@
     "页": "Page",
     "请填写您的机构名称和邮箱，以便我们通过邮件发送所选数据：": "Please provide your institution name and email so we can send the selected data via email:",
     "机构名称:": "Institution Name:",
-    "邮箱:": "Email:"
+    "请输入机构名称": "Please enter your institution name",
+    "邮箱:": "Email:",
+    "请输入邮箱": "Please enter your email"
 }
