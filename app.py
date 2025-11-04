@@ -8,6 +8,7 @@ import requests
 from table import output_paginated_table
 from details import render_detail
 from download import download_tab, send_to_email
+from i18n import i18n
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -52,21 +53,21 @@ app_ui = ui.page_fluid(
             ui.layout_columns(
                 ui.input_select(
                     "region",
-                    "经济体",
-                    choices=["全部"] + all_regions,
+                    i18n("经济体"),
+                    choices=[i18n("全部")] + all_regions,
                 ),
                 ui.input_select(
                     "type",
-                    "政策类型",
-                    choices=["全部"] + sorted(df["政策类型"].unique().to_list()),
+                    i18n("政策类型"),
+                    choices=[i18n("全部")] + sorted(df["政策类型"].unique().to_list()),
                 ),
                 ui.input_select(
                     "year",
-                    "年份",
-                    choices=["全部"]
+                    i18n("年份"),
+                    choices=[i18n("全部")]
                     + sorted(df["时间"].str.slice(3, 4).unique().to_list(), reverse=True),
                 ),
-                ui.input_text(id="keyword", label="关键词", placeholder="请输入关键词"),
+                ui.input_text(id="keyword", label=i18n("关键词"), placeholder=i18n("请输入关键词")),
                 ui.div(
                     ui.div(
                         "下载",
@@ -95,11 +96,11 @@ app_ui = ui.page_fluid(
                     style="display: flex; flex-direction: column; align-items: start; justify-content: end; padding-top: 0.6em;",
                 ),
             ),
-            ui.tags.style("""
-                th, td {
+            ui.tags.style(f"""
+                th, td {{
                     text-align: left;
-                }
-                .download-icon {
+                }}
+                .download-icon {{
                     background-color: white;
                     border: 1px solid #ccc;
                     padding: 6px 12px;
@@ -110,12 +111,12 @@ app_ui = ui.page_fluid(
                     justify-content: center;
                     transition: background-color 0.2s;
                     position: relative;
-                }
-                .download-icon:hover {
+                }}
+                .download-icon:hover {{
                     background-color: #f0f0f0;
-                }
-                .download-icon:hover::after {
-                    content: '下载结果';
+                }}
+                .download-icon:hover::after {{
+                    content: '{i18n("下载结果")}';
                     position: absolute;
                     bottom: -2em;
                     background-color: #bbb;
@@ -124,22 +125,22 @@ app_ui = ui.page_fluid(
                     padding: 4px 8px;
                     border-radius: 4px;
                     white-space: nowrap;
-                }
+                }}
 
-                .download-icon svg {
+                .download-icon svg {{
                     width: 20px;
                     height: 20px;
                     fill: #333;
-                }
+                }}
                 
-                .detail-buttons {
+                .detail-buttons {{
                     display: flex;
                     gap: 1em;
                     margin-top: 1em;
-                }
+                }}
 
                 .detail-buttons a,
-                .detail-buttons button {
+                .detail-buttons button {{
                     padding: 0.75em 2em;
                     font-size: 1em;
                     border: none;
@@ -149,13 +150,13 @@ app_ui = ui.page_fluid(
                     color: white;
                     background-color: rgb(13, 97, 72);
                     transition: background-color 0.3s;
-                }
+                }}
 
                 .detail-buttons a:hover,
-                .detail-buttons button:hover {
+                .detail-buttons button:hover {{
                     color: white;
                     background-color: rgb(11, 82, 61);
-                }
+                }}
             """),
             ui.navset_hidden(
                 ui.nav_panel(
@@ -180,11 +181,11 @@ def server(input, output, session):
     def filtered():
         current_page.set(1)
         data = df
-        if input.region() != "全部":
+        if input.region() != i18n("全部"):
             data = data.filter(pl.col("经济体").str.contains(input.region()))
-        if input.type() != "全部":
+        if input.type() != i18n("全部"):
             data = data.filter(pl.col("政策类型") == input.type())
-        if input.year() != "全部":
+        if input.year() != i18n("全部"):
             data = data.filter(pl.col("时间").cast(str).str.slice(3, 4) == input.year())
         if input.keyword():
             keyword: str = input.keyword().lower().strip()

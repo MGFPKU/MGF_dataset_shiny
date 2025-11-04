@@ -1,7 +1,7 @@
 from htmltools import tags, Tag
 import polars as pl
 import math
-
+from i18n import i18n, LANG
 
 def render_pagination(id: str, current: int, total: int) -> Tag:
     def page_btn(label, page, active=False):
@@ -14,8 +14,8 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
     buttons = []
 
     # 首页 / 上一页
-    buttons.append(page_btn("首页", 1))
-    buttons.append(page_btn("上一页", max(1, current - 1)))
+    buttons.append(page_btn(i18n("首页"), 1))
+    buttons.append(page_btn(i18n("上一页"), max(1, current - 1)))
 
     # Page numbers
     # Page range: max 5 buttons, centered on current page
@@ -28,15 +28,9 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
         buttons.append(page_btn(str(i), i, active=(i == current)))
 
     # 下一页 / 末页
-    buttons.append(page_btn("下一页", min(total, current + 1)))
-    buttons.append(page_btn("末页", total))
+    buttons.append(page_btn(i18n("下一页"), min(total, current + 1)))
+    buttons.append(page_btn(i18n("末页"), total))
 
-    # Optional dropdown
-    dropdown = tags.select(
-        *[tags.option(str(i), selected=(i == current)) for i in range(1, total + 1)],
-        onchange=f'Shiny.setInputValue("{id}_page", parseInt(this.value), {{priority: "event"}})',
-        style="margin-left: 1em;",
-    )
     return tags.div(
         tags.style("""
             .page-btn {
@@ -58,8 +52,7 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
         """),
         tags.div(
             *buttons,
-            dropdown,
-            tags.span("页", style="margin-left: 4px;"),
+            *render_dropdown(current, total),
             style=(
                 "display: flex; "
                 "align-items: center; "
@@ -71,6 +64,21 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
         ),
     )
 
+def render_dropdown(current: int, total: int):
+    dropdown = tags.select(
+        *[tags.option(str(i), selected=(i == current)) for i in range(1, total + 1)],
+        onchange=f'Shiny.setInputValue("{id}_page", parseInt(this.value), {{priority: "event"}})',
+        # style="margin-left: 1em;",
+    )
+    if LANG == 'CN':
+        text1 = tags.span(i18n("第"), style="margin-left: 4px;"),
+        text2 = tags.span(i18n("页")),
+        return (text1, dropdown, text2)
+    elif LANG == 'EN':
+        text = tags.span(i18n("页"), style="margin-left: 4px;"),
+        return (text, dropdown)
+    else:
+        raise ValueError(f"Unsupported language: {LANG}")
 
 def output_paginated_table(
     id: str, df: pl.DataFrame, page: int = 1, per_page: int = 10
