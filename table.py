@@ -1,7 +1,7 @@
 from htmltools import tags, Tag
 import polars as pl
 import math
-
+from i18n import i18n
 
 def render_pagination(id: str, current: int, total: int) -> Tag:
     def page_btn(label, page, active=False):
@@ -14,8 +14,8 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
     buttons = []
 
     # 首页 / 上一页
-    buttons.append(page_btn("首页", 1))
-    buttons.append(page_btn("上一页", max(1, current - 1)))
+    buttons.append(page_btn(i18n("首页"), 1))
+    buttons.append(page_btn(i18n("上一页"), max(1, current - 1)))
 
     # Page numbers
     # Page range: max 5 buttons, centered on current page
@@ -28,8 +28,8 @@ def render_pagination(id: str, current: int, total: int) -> Tag:
         buttons.append(page_btn(str(i), i, active=(i == current)))
 
     # 下一页 / 末页
-    buttons.append(page_btn("下一页", min(total, current + 1)))
-    buttons.append(page_btn("末页", total))
+    buttons.append(page_btn(i18n("下一页"), min(total, current + 1)))
+    buttons.append(page_btn(i18n("末页"), total))
 
     # Optional dropdown
     dropdown = tags.select(
