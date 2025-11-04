@@ -18,5 +18,7 @@
     "请输入邮箱": "Please enter your email",
     "发送 CSV": "Send CSV",
     "发送 Excel": "Send Excel",
-    "返回列表": "Return to List"
+    "返回列表": "Return to List",
+    "📮 无效的邮箱地址，请检查输入。": "📮 Invalid email, please check your input",
+    "🏢 请输入机构名称（至少两个字符）。": "🏢 Please enter valid institution name (at least 2 characters)"
 }

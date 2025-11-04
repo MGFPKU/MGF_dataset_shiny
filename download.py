@@ -60,12 +60,12 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
 
     # Validate email
     if not EMAIL_REGEX.match(email):
-        ui.notification_show("📮 无效的邮箱地址，请检查输入。", type="error")
+        ui.notification_show(i18n("📮 无效的邮箱地址，请检查输入。"), type="error")
         return
 
     # Validate institution (optional, but recommended)
     if len(inst) < 2:
-        ui.notification_show("🏢 请输入机构名称（至少两个字符）。", type="error")
+        ui.notification_show(i18n("🏢 请输入机构名称（至少两个字符）。"), type="error")
         return
 
     # Save info in browser localStorage
