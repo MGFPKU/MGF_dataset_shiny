@@ -96,11 +96,11 @@ app_ui = ui.page_fluid(
                     style="display: flex; flex-direction: column; align-items: start; justify-content: end; padding-top: 0.6em;",
                 ),
             ),
-            ui.tags.style("""
-                th, td {
+            ui.tags.style(f"""
+                th, td {{
                     text-align: left;
-                }
-                .download-icon {
+                }}
+                .download-icon {{
                     background-color: white;
                     border: 1px solid #ccc;
                     padding: 6px 12px;
@@ -111,12 +111,12 @@ app_ui = ui.page_fluid(
                     justify-content: center;
                     transition: background-color 0.2s;
                     position: relative;
-                }
-                .download-icon:hover {
+                }}
+                .download-icon:hover {{
                     background-color: #f0f0f0;
-                }
-                .download-icon:hover::after {
-                    content: '下载结果';
+                }}
+                .download-icon:hover::after {{
+                    content: '{i18n("下载结果")}';
                     position: absolute;
                     bottom: -2em;
                     background-color: #bbb;
@@ -125,22 +125,22 @@ app_ui = ui.page_fluid(
                     padding: 4px 8px;
                     border-radius: 4px;
                     white-space: nowrap;
-                }
+                }}
 
-                .download-icon svg {
+                .download-icon svg {{
                     width: 20px;
                     height: 20px;
                     fill: #333;
-                }
+                }}
                 
-                .detail-buttons {
+                .detail-buttons {{
                     display: flex;
                     gap: 1em;
                     margin-top: 1em;
-                }
+                }}
 
                 .detail-buttons a,
-                .detail-buttons button {
+                .detail-buttons button {{
                     padding: 0.75em 2em;
                     font-size: 1em;
                     border: none;
@@ -150,13 +150,13 @@ app_ui = ui.page_fluid(
                     color: white;
                     background-color: rgb(13, 97, 72);
                     transition: background-color 0.3s;
-                }
+                }}
 
                 .detail-buttons a:hover,
-                .detail-buttons button:hover {
+                .detail-buttons button:hover {{
                     color: white;
                     background-color: rgb(11, 82, 61);
-                }
+                }}
             """),
             ui.navset_hidden(
                 ui.nav_panel(
