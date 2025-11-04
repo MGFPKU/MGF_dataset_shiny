@@ -58,16 +58,16 @@ app_ui = ui.page_fluid(
                 ),
                 ui.input_select(
                     "type",
-                    "政策类型",
+                    i18n("政策类型"),
                     choices=["全部"] + sorted(df["政策类型"].unique().to_list()),
                 ),
                 ui.input_select(
                     "year",
-                    "年份",
+                    i18n("年份"),
                     choices=["全部"]
                     + sorted(df["时间"].str.slice(3, 4).unique().to_list(), reverse=True),
                 ),
-                ui.input_text(id="keyword", label="关键词", placeholder="请输入关键词"),
+                ui.input_text(id="keyword", label=i18n("关键词"), placeholder="请输入关键词"),
                 ui.div(
                     ui.div(
                         "下载",
