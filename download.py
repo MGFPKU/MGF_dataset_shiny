@@ -94,6 +94,6 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
             raise ValueError("GOOGLE_SCRIPT_URL environment variable is not set.")
         response: Response =  await client.post(GOOGLE_SCRIPT_URL, json=payload)
         if response.status_code == 302:
-            _ = ui.notification_show(f"📬 数据已发送至邮箱", type="message")
+            _ = ui.notification_show(i18n("📬 数据已发送至邮箱"), type="message")
         else:
-            _ = ui.notification_show(f"❌ 数据发送失败: {response}", type="error")
+            _ = ui.notification_show(f"{i18n("❌ 数据发送失败:")} {response}", type="error")
