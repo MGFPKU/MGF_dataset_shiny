@@ -8,6 +8,7 @@ import requests
 from table import output_paginated_table
 from details import render_detail
 from download import download_tab, send_to_email
+from i18n import i18n
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -52,7 +53,7 @@ app_ui = ui.page_fluid(
             ui.layout_columns(
                 ui.input_select(
                     "region",
-                    "经济体",
+                    i18n("经济体"),
                     choices=["全部"] + all_regions,
                 ),
                 ui.input_select(
