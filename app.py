@@ -67,7 +67,7 @@ app_ui = ui.page_fluid(
                     choices=[i18n("全部")]
                     + sorted(df["时间"].str.slice(3, 4).unique().to_list(), reverse=True),
                 ),
-                ui.input_text(id="keyword", label=i18n("关键词"), placeholder="请输入关键词"),
+                ui.input_text(id="keyword", label=i18n("关键词"), placeholder=i18n("请输入关键词")),
                 ui.div(
                     ui.div(
                         "下载",
