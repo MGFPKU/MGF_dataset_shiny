@@ -96,4 +96,4 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
         if response.status_code == 302:
             _ = ui.notification_show(i18n("📬 数据已发送至邮箱"), type="message")
         else:
-            _ = ui.notification_show(f"{i18n("❌ 数据发送失败:")} {response}", type="error")
+            _ = ui.notification_show(i18n("❌ 数据发送失败: {}", response), type="error")
