@@ -67,7 +67,7 @@ def render_detail(row: pl.DataFrame) -> Tag | HTML:
             ],
             class_="detail-meta",
         ),
-        ui.div(r[7] if len(r) > 7 else "暂无详细描述内容。", class_="detail-text"),
+        ui.div(r[7] if len(r) > 7 else i18n("暂无详细描述内容。"), class_="detail-text"),
         ui.div(
             ui.input_action_button("back", "返回列表", class_="btn"),
             ui.a("详情链接", href=r[6], target="_blank", class_="btn"),
