@@ -3,7 +3,7 @@ from shiny import ui
 from htmltools._core import Tag
 
 
-def render_detail(row: pl.DataFrame) -> Tag:
+def render_detail(row: pl.DataFrame) -> Tag | HTML:
     if row.is_empty():
         return ui.markdown("### ⚠️ Policy not found")
 
