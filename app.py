@@ -13,7 +13,7 @@ from i18n import i18n, LANG
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO = "MGFPKU/MGF_dataset_scraping"
-FILE_PATH: str = "data/data.csv" if LANG == "zh" else "data/data_en.csv"
+FILE_PATH: str = "data/data.csv" if LANG == "CN" else "data/data_en.csv"
 BRANCH = "main"
 
 
