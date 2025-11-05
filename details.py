@@ -1,9 +1,11 @@
 import polars as pl
 from shiny import ui
-from htmltools._core import Tag
+from htmltools._core import Tag, HTML
+
+from i18n import i18n
 
 
-def render_detail(row: pl.DataFrame) -> Tag:
+def render_detail(row: pl.DataFrame) -> Tag | HTML:
     if row.is_empty():
         return ui.markdown("### ⚠️ Policy not found")
 
@@ -55,20 +57,20 @@ def render_detail(row: pl.DataFrame) -> Tag:
                 )
                 for i, (label, value) in enumerate(
                     [
-                        ("经济体", r[3]),
-                        ("时间", r[1]),
-                        ("政策类型", r[2]),
-                        ("发布主体", r[4]),
-                        ("关键词", r[5] if r[5] else ""),
+                        (i18n("经济体"), r[3]),
+                        (i18n("时间"), r[1]),
+                        (i18n("政策类型"), r[2]),
+                        (i18n("发布主体"), r[4]),
+                        (i18n("关键词"), r[5] if r[5] else ""),
                     ]
                 )
             ],
             class_="detail-meta",
         ),
-        ui.div(r[7] if len(r) > 7 else "暂无详细描述内容。", class_="detail-text"),
+        ui.div(r[7] if len(r) > 7 else i18n("暂无详细描述内容。"), class_="detail-text"),
         ui.div(
-            ui.input_action_button("back", "返回列表", class_="btn"),
-            ui.a("详情链接", href=r[6], target="_blank", class_="btn"),
+            ui.input_action_button("back", i18n("返回列表"), class_="btn"),
+            ui.a(i18n("详情链接"), href=r[6], target="_blank", class_="btn"),
             class_="detail-buttons",
         ),
     )

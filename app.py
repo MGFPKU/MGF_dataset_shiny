@@ -209,7 +209,7 @@ def server(input, output, session):
 
     @output
     @render.ui  # table
-    def table_ui() -> Tag:
+    def table_ui():
         # Rearrange and format data
         data: pl.DataFrame = (
             filtered()
@@ -231,7 +231,7 @@ def server(input, output, session):
     @render.ui
     def detail_ui():
         if not focused_policy():
-            return ui.markdown("⚠️ 未找到政策详情。")
+            return ui.markdown(i18n("⚠️ 未找到政策详情。"))
         row = df.filter(pl.col("政策动态") == focused_policy())
         return render_detail(row)
 

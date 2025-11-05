@@ -3,6 +3,8 @@
     "政策类型": "Policy Type",
     "年份": "Year",
     "关键词": "Keywords",
+    "时间": "Time",
+    "发布主体": "Publisher",
     "全部": "All",
     "请输入关键词": "Please enter keywords",
     "下载结果": "Download Results",
@@ -23,5 +25,8 @@
     "🏢 请输入机构名称（至少两个字符）。": "🏢 Please enter valid institution name (at least 2 characters)",
     "📬 数据已发送至邮箱": "📬 Data has been sent to your email.",
     "❌ 数据发送失败: {}": "❌ Data sending failed: {}",
-    "将通过邮件当前筛选结果，共 {} 条记录": "Sending the current filtered results via email, a total of {} records"
+    "将通过邮件当前筛选结果，共 {} 条记录": "Sending the current filtered results via email, a total of {} records",
+    "⚠️ 未找到政策详情。": "⚠️ Policy details not found.",
+    "暂无详细描述内容。": "No detailed description available.",
+    "详情链接":  "Link to Details"
 }
