@@ -242,7 +242,7 @@ def server(input, output, session):
 
     @render.text
     def nrow():
-        return f"将通过邮件当前筛选结果，共 {filtered().shape[0]} 条记录"
+        return i18n("将通过邮件当前筛选结果，共 {} 条记录", filtered().shape[0])
 
     @reactive.effect
     @reactive.event(input.send_csv)

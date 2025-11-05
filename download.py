@@ -7,19 +7,21 @@ import httpx
 import base64
 import re
 
+from i18n import i18n
+
 GOOGLE_SCRIPT_URL: str | None = os.getenv("GOOGLE_SCRIPT_URL")
 
 download_tab = ui.nav_panel(
                     "download_panel",
-                    ui.HTML("请填写您的机构名称和邮箱，以便我们通过邮件发送所选数据：<br><br>"),
-                    ui.input_text("user_inst", "机构名称:", placeholder="请输入机构名称"),
-                    ui.input_text("user_email", "邮箱:", placeholder="请输入邮箱"),
+                    ui.HTML(f"{i18n("请填写您的机构名称和邮箱，以便我们通过邮件发送所选数据：")}<br><br>"),
+                    ui.input_text("user_inst", i18n("机构名称:"), placeholder=i18n("请输入机构名称")),
+                    ui.input_text("user_email", i18n("邮箱:"), placeholder=i18n("请输入邮箱")),
                     ui.output_text(id="nrow"),
                     ui.div(
                         ui.layout_columns(
-                            ui.input_action_button(id="send_csv", label="发送 CSV"),
-                            ui.input_action_button(id="send_excel", label="发送 Excel"),
-                            ui.input_action_button("back1", "返回列表")
+                            ui.input_action_button(id="send_csv", label=i18n("发送 CSV")),
+                            ui.input_action_button(id="send_excel", label=i18n("发送 Excel")),
+                            ui.input_action_button("back1", i18n("返回列表"))
                         ),
                         class_="detail-buttons",
                     ),
@@ -58,12 +60,12 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
 
     # Validate email
     if not EMAIL_REGEX.match(email):
-        ui.notification_show("📮 无效的邮箱地址，请检查输入。", type="error")
+        ui.notification_show(i18n("📮 无效的邮箱地址，请检查输入。"), type="error")
         return
 
     # Validate institution (optional, but recommended)
     if len(inst) < 2:
-        ui.notification_show("🏢 请输入机构名称（至少两个字符）。", type="error")
+        ui.notification_show(i18n("🏢 请输入机构名称（至少两个字符）。"), type="error")
         return
 
     # Save info in browser localStorage
@@ -92,6 +94,6 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
             raise ValueError("GOOGLE_SCRIPT_URL environment variable is not set.")
         response: Response =  await client.post(GOOGLE_SCRIPT_URL, json=payload)
         if response.status_code == 302:
-            _ = ui.notification_show(f"📬 数据已发送至邮箱", type="message")
+            _ = ui.notification_show(i18n("📬 数据已发送至邮箱"), type="message")
         else:
-            _ = ui.notification_show(f"❌ 数据发送失败: {response}", type="error")
+            _ = ui.notification_show(i18n("❌ 数据发送失败: {}", response), type="error")

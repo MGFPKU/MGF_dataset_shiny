@@ -10,5 +10,18 @@
     "上一页": "Previous",
     "下一页": "Next",
     "末页": "Last",
-    "页": "Page"
+    "页": "Page",
+    "请填写您的机构名称和邮箱，以便我们通过邮件发送所选数据：": "Please provide your institution name and email so we can send the selected data via email:",
+    "机构名称:": "Institution Name:",
+    "请输入机构名称": "Please enter your institution name",
+    "邮箱:": "Email:",
+    "请输入邮箱": "Please enter your email",
+    "发送 CSV": "Send CSV",
+    "发送 Excel": "Send Excel",
+    "返回列表": "Return to List",
+    "📮 无效的邮箱地址，请检查输入。": "📮 Invalid email, please check your input",
+    "🏢 请输入机构名称（至少两个字符）。": "🏢 Please enter valid institution name (at least 2 characters)",
+    "📬 数据已发送至邮箱": "📬 Data has been sent to your email.",
+    "❌ 数据发送失败: {}": "❌ Data sending failed: {}",
+    "将通过邮件当前筛选结果，共 {} 条记录": "Sending the current filtered results via email, a total of {} records"
 }
