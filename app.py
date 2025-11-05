@@ -232,7 +232,7 @@ def server(input, output, session):
     def detail_ui():
         if not focused_policy():
             return ui.markdown(i18n("⚠️ 未找到政策详情。"))
-        row = df.filter(pl.col("政策动态") == focused_policy())
+        row = df.filter(pl.col(i18n("政策动态")) == focused_policy())
         return render_detail(row)
 
     @reactive.effect
