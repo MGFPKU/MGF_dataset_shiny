@@ -8,12 +8,12 @@ import requests
 from table import output_paginated_table
 from details import render_detail
 from download import download_tab, send_to_email
-from i18n import i18n
+from i18n import i18n, LANG
 
 # Dataset info
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO = "MGFPKU/MGF_dataset_scraping"
-FILE_PATH = "data/data.csv"
+FILE_PATH: str = "data/data.csv" if LANG == "zh" else "data/data_en.csv"
 BRANCH = "main"
 
 
@@ -33,17 +33,17 @@ def fetch_data():
 raw_df = fetch_data()
 df = (
     raw_df.with_columns(
-        pl.col("时间").str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
+        pl.col(i18n("时间")).str.strptime(pl.Date, "%m/%Y", strict=False).alias("parsed_time")
     )
     .reverse()
     .sort("parsed_time", descending=True)
-    .drop(["parsed_time", "新闻链接","备注"])
+    .drop(["parsed_time", i18n("新闻链接"),i18n("备注")])
 )
 
 # fix region tags
-regions: list[str] = df["经济体"].drop_nulls().to_list()
+regions: list[str] = df[i18n("经济体")].drop_nulls().to_list()
 # Split by '；', strip whitespace, flatten
-all_regions = sorted(set(r.strip() for entry in regions for r in entry.split("；")))
+all_regions = sorted(set(r.strip() for entry in regions for r in entry.split(i18n("；"))))
 
 # compile ui
 app_ui = ui.page_fluid(
@@ -59,13 +59,13 @@ app_ui = ui.page_fluid(
                 ui.input_select(
                     "type",
                     i18n("政策类型"),
-                    choices=[i18n("全部")] + sorted(df["政策类型"].unique().to_list()),
+                    choices=[i18n("全部")] + sorted(df[i18n("政策类型")].unique().to_list()),
                 ),
                 ui.input_select(
                     "year",
                     i18n("年份"),
                     choices=[i18n("全部")]
-                    + sorted(df["时间"].str.slice(3, 4).unique().to_list(), reverse=True),
+                    + sorted(df[i18n("时间")].str.slice(3, 4).unique().to_list(), reverse=True),
                 ),
                 ui.input_text(id="keyword", label=i18n("关键词"), placeholder=i18n("请输入关键词")),
                 ui.div(
@@ -182,11 +182,11 @@ def server(input, output, session):
         current_page.set(1)
         data = df
         if input.region() != i18n("全部"):
-            data = data.filter(pl.col("经济体").str.contains(input.region()))
+            data = data.filter(pl.col(i18n("经济体")).str.contains(input.region()))
         if input.type() != i18n("全部"):
-            data = data.filter(pl.col("政策类型") == input.type())
+            data = data.filter(pl.col(i18n("政策类型")) == input.type())
         if input.year() != i18n("全部"):
-            data = data.filter(pl.col("时间").cast(str).str.slice(3, 4) == input.year())
+            data = data.filter(pl.col(i18n("时间")).cast(str).str.slice(3, 4) == input.year())
         if input.keyword():
             keyword: str = input.keyword().lower().strip()
             if keyword:
@@ -213,9 +213,9 @@ def server(input, output, session):
         # Rearrange and format data
         data: pl.DataFrame = (
             filtered()
-            .select((["经济体", "政策动态", "政策类型", "发布主体", "时间"]))
+            .select(([i18n("经济体"), i18n("政策动态"), i18n("政策类型"), i18n("发布主体"), i18n("时间")]))
             .with_columns(
-                pl.col("时间")
+                pl.col(i18n("时间"))
                 .str.strptime(pl.Date, "%m/%Y", strict=False)
                 .dt.strftime("%Y-%m")
             )
@@ -232,7 +232,7 @@ def server(input, output, session):
     def detail_ui():
         if not focused_policy():
             return ui.markdown(i18n("⚠️ 未找到政策详情。"))
-        row = df.filter(pl.col("政策动态") == focused_policy())
+        row = df.filter(pl.col(i18n("政策动态")) == focused_policy())
         return render_detail(row)
 
     @reactive.effect
