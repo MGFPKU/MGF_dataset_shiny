@@ -2,7 +2,7 @@ import os
 import json
 from typing import Dict
 
-LANG: str = os.getenv("language", "CN")
+LANG: str = os.getenv("LANGUAGE", "CN").upper()
 translation: Dict[str, str] = {}
 
 if LANG not in ['CN', 'EN']:
