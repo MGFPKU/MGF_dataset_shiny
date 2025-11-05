@@ -7,7 +7,7 @@ import httpx
 import base64
 import re
 
-from i18n import i18n
+from i18n import i18n, LANG
 
 GOOGLE_SCRIPT_URL: str | None = os.getenv("GOOGLE_SCRIPT_URL")
 
@@ -87,6 +87,7 @@ async def send_to_email(input, session, fmt: str, data: bytes | str):
         "email": email,
         "inst": inst,
         "format": fmt,
+        "lang": LANG,
         "content": content_b64,
     }
     async with httpx.AsyncClient() as client:
