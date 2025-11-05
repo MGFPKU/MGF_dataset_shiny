@@ -1,6 +1,8 @@
 import polars as pl
 from shiny import ui
-from htmltools._core import Tag
+from htmltools._core import Tag, HTML
+
+from i18n import i18n
 
 
 def render_detail(row: pl.DataFrame) -> Tag | HTML:
@@ -55,11 +57,11 @@ def render_detail(row: pl.DataFrame) -> Tag | HTML:
                 )
                 for i, (label, value) in enumerate(
                     [
-                        ("经济体", r[3]),
-                        ("时间", r[1]),
-                        ("政策类型", r[2]),
-                        ("发布主体", r[4]),
-                        ("关键词", r[5] if r[5] else ""),
+                        (i18n("经济体"), r[3]),
+                        (i18n("时间"), r[1]),
+                        (i18n("政策类型"), r[2]),
+                        (i18n("发布主体"), r[4]),
+                        (i18n("关键词"), r[5] if r[5] else ""),
                     ]
                 )
             ],
