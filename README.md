@@ -90,6 +90,32 @@ Or more conveniently, install the `shiny` extension to Positron/VS Code and pres
 
 ---
 
+## 📁 Project structure
+
+The repository layout and purpose of key files:
+
+```
+.env                  # Environment variables (not committed, create locally following setup instructions)
+app.py                # Main Shiny app (UI + server)
+details.py            # Renders detailed policy view
+table.py              # Paginated table output and helpers
+download.py           # Download UI and mailing helpers (POSTs to Google Script)
+i18n.py               # Translation helper; reads LANGUAGE to switch UI
+translation.json      # Translation strings used by `i18n.py`
+pyproject.toml        # Project metadata / build config (managed by uv)
+.python-version       # Python version pinning for uv
+requirements.txt      # Dependency pins (optional with pyproject)
+LICENSE               # License
+README.md             # Project documentation (this file)
+.gitignore            # Git ignore rules
+```
+
+Notes:
+- Edit `app.py` to change high-level UI or filtering logic.
+- `table.py` and `details.py` control how policy rows and detail pages are rendered.
+- `download.py` integrates with the Google Apps Script mailing bot (set via `GOOGLE_SCRIPT_URL`).
+
+
 ## 📚 Citation
 
 If you use the MGF dataset in your research or writing, please cite us as follows:
