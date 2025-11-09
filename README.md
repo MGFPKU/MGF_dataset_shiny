@@ -55,7 +55,7 @@ We use `uv` for fast dependency resolution:
 uv sync
 ```
 
-### 3. Authentication
+### 3. Set up environment variables
 
 > ⚠️ We do not publish a GitHub token in this repo.
 > If you need access for development or testing, contact the maintainers for a personal access token (PAT) with read-only access to the dataset repository.
@@ -64,7 +64,15 @@ You’ll need to set the token in a `.env` file like:
 
 ```env
 GITHUB_TOKEN=ghp_...
+GOOGLE_SCRIPT_URL=https://script.google.com/macros/s/...
+LANGUAGE=EN
 ```
+
+Below is what each variable does:
+
+- `GITHUB_TOKEN`: a GitHub Personal Access Token (PAT) with read access to the dataset repository. The app uses this token when calling the GitHub API to fetch `data/data.csv`. Keep this token private (do not commit it).
+- `GOOGLE_SCRIPT_URL`: the public URL for a Google Apps Script web app that acts as the mailing bot. The Shiny app POSTs filtered exports (CSV/XLSX) to this endpoint and the script forwards them by email.
+- `LANGUAGE`: set the UI language for the app. Use `EN` for English or `CN` for Chinese. The value controls which translations are displayed in the interface.
 
 ### 4. Run the app
 
@@ -96,7 +104,7 @@ If you use the MGF dataset in your research or writing, please cite us as follow
 
 ## 📁 Data Source
 
-The dataset is hosted in a _private_ public GitHub repository along with our scraping scripts. We apologize for the inconvenience. But the dataset provided through the app is updated in real-time and contains most information available on the original source.
+The dataset is hosted in a _private_ GitHub repository along with our scraping scripts. We apologize for the inconvenience. But the dataset provided through the app is updated in real-time and contains most information available on the original source.
 
 ---
 
