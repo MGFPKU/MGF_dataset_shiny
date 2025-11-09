@@ -1,7 +1,7 @@
 [project]
 name = "mgb-shiny"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.2.0"
+description = "MGF Dataset Explorer — Shiny for Python web app to browse climate-related policy actions"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
