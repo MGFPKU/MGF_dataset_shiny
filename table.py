@@ -80,6 +80,10 @@ def render_dropdown(current: int, total: int):
     else:
         raise ValueError(f"Unsupported language: {LANG}")
 
+def _col_class(col_name: str) -> str:
+    """Convert column name to a valid CSS class name by replacing spaces with hyphens."""
+    return f"col-{col_name.replace(' ', '-')}"
+
 def output_paginated_table(
     id: str, df: pl.DataFrame, page: int = 1, per_page: int = 10
 ) -> Tag:
@@ -91,7 +95,7 @@ def output_paginated_table(
     slice_df = df[start:end, :6]  # first 6 columns only
 
     # Header
-    thead = tags.thead(tags.tr(*(tags.th(col) for col in slice_df.columns)))
+    thead = tags.thead(tags.tr(*(tags.th(col, class_=_col_class(col)) for col in slice_df.columns)))
 
     # Rows
     tbody = tags.tbody()
@@ -102,7 +106,7 @@ def output_paginated_table(
         row_cells = [
             tags.td(
                 str(cell),
-                class_=f"col-{col_name}"
+                class_=_col_class(col_name)
             )
             for col_name, cell in zip(slice_df.columns, row)
         ]
@@ -164,6 +168,33 @@ def output_paginated_table(
             .custom-table .col-Publisher {
                 white-space: normal;
                 word-break: break-word;
+            }
+
+            /* Column widths: Time and Policy Type narrower, Policy wider */
+            .custom-table .col-时间,
+            .custom-table .col-Time {
+                width: 80px;
+                min-width: 80px;
+            }
+
+            .custom-table .col-政策类型,
+            .custom-table .col-Policy-Type {
+                width: 14%;
+            }
+
+            .custom-table .col-经济体,
+            .custom-table .col-Economy {
+                width: 12%;
+            }
+
+            .custom-table .col-发布主体,
+            .custom-table .col-Publisher {
+                width: 18%;
+            }
+
+            .custom-table .col-政策动态,
+            .custom-table .col-Policy {
+                width: auto;
             }
 
             .clickable-row {
