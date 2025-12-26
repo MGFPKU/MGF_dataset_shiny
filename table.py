@@ -121,10 +121,14 @@ def output_paginated_table(
     table = tags.table(thead, tbody, class_="custom-table")
     return tags.div(
         tags.style("""
+            .custom-table-container {
+                width: 100%;
+                overflow-x: auto;
+            }
             .custom-table {
                 border-collapse: collapse;
                 width: 100%;
-                table-layout: auto;
+                table-layout: fixed;
             }
             .custom-table th {
                 text-align: left;
@@ -137,6 +141,8 @@ def output_paginated_table(
                 border: 1px solid #eee;
                 padding: 14px 8px;
                 white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
 
             /* Remove vertical borders */
@@ -146,8 +152,16 @@ def output_paginated_table(
                 border-right: none;
             }
 
-            /* Allow wrapping only for the 发布主体 column */
-            .custom-table .col-发布主体 {
+            /* Allow wrapping for Policy column (政策动态/Policy) */
+            .custom-table .col-政策动态,
+            .custom-table .col-Policy {
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            /* Allow wrapping for Publisher column (发布主体/Publisher) */
+            .custom-table .col-发布主体,
+            .custom-table .col-Publisher {
                 white-space: normal;
                 word-break: break-word;
             }
@@ -165,9 +179,9 @@ def output_paginated_table(
                 /* Ensures no text underlines or color overrides interfere */
                 color: black;
                 text-decoration: none;
-}
+            }
         """),
-        table,
+        tags.div(table, class_="custom-table-container"),
         pagination,
     )
 
