@@ -10,12 +10,11 @@ from details import render_detail
 from download import download_tab, send_to_email
 from i18n import i18n, LANG
 
-# Dataset info
+# Dataset info ----
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPO = "MGFPKU/MGF_dataset_scraping"
 FILE_PATH: str = "data/data.csv" if LANG == "CN" else "data/data_en.csv"
 BRANCH = "main"
-
 
 def fetch_data():
     headers = {
