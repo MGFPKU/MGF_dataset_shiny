@@ -36,7 +36,7 @@ df = (
     )
     .reverse()
     .sort("parsed_time", descending=True)
-    .drop(["parsed_time", i18n("新闻链接"),i18n("备注")])
+    .drop(["parsed_time", i18n("新闻链接"), i18n("备注")], strict=False)
 )
 
 # fix region tags
@@ -64,7 +64,7 @@ app_ui = ui.page_fluid(
                     "year",
                     i18n("年份"),
                     choices=[i18n("全部")]
-                    + sorted(df[i18n("时间")].str.slice(3, 4).unique().to_list(), reverse=True),
+                    + sorted(df[i18n("时间")].str.slice(3, 7).unique().to_list(), reverse=True),
                 ),
                 ui.input_text(id="keyword", label=i18n("关键词"), placeholder=i18n("请输入关键词")),
                 ui.div(
@@ -186,7 +186,7 @@ def server(input, output, session):
         if input.type() != i18n("全部"):
             data = data.filter(pl.col(i18n("政策类型")) == input.type())
         if input.year() != i18n("全部"):
-            data = data.filter(pl.col(i18n("时间")).cast(str).str.slice(3, 4) == input.year())
+            data = data.filter(pl.col(i18n("时间")).cast(str).str.slice(3, 7) == input.year())
         if input.keyword():
             keyword: str = input.keyword().lower().strip()
             if keyword:

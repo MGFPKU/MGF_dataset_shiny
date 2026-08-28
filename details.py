@@ -9,7 +9,7 @@ def render_detail(row: pl.DataFrame) -> Tag | HTML:
     if row.is_empty():
         return ui.markdown("### ⚠️ Policy not found")
 
-    r = row.row(0)
+    r = row.row(0, named=True)
 
     return ui.div(
         ui.tags.style("""
@@ -46,7 +46,7 @@ def render_detail(row: pl.DataFrame) -> Tag | HTML:
                 margin-bottom: 2em;
             }
         """),
-        ui.div(r[0], class_="detail-title"),
+        ui.div(r[i18n("政策动态")], class_="detail-title"),
         ui.div(
             *[
                 ui.div(
@@ -57,20 +57,20 @@ def render_detail(row: pl.DataFrame) -> Tag | HTML:
                 )
                 for i, (label, value) in enumerate(
                     [
-                        (i18n("经济体"), r[3]),
-                        (i18n("时间"), r[1]),
-                        (i18n("政策类型"), r[2]),
-                        (i18n("发布主体"), r[4]),
-                        (i18n("关键词"), r[5] if r[5] else ""),
+                        (i18n("经济体"), r[i18n("经济体")]),
+                        (i18n("时间"), r[i18n("时间")]),
+                        (i18n("政策类型"), r[i18n("政策类型")]),
+                        (i18n("发布主体"), r[i18n("发布主体")]),
+                        (i18n("关键词"), r.get(i18n("关键词")) or ""),
                     ]
                 )
             ],
             class_="detail-meta",
         ),
-        ui.div(r[7] if len(r) > 7 else i18n("暂无详细描述内容。"), class_="detail-text"),
+        ui.div(r.get(i18n("内容简介")) or i18n("暂无详细描述内容。"), class_="detail-text"),
         ui.div(
             ui.input_action_button("back", i18n("返回列表"), class_="btn"),
-            ui.a(i18n("详情链接"), href=r[6], target="_blank", class_="btn"),
+            ui.a(i18n("详情链接"), href=r.get(i18n("原文链接"), ""), target="_blank", class_="btn"),
             class_="detail-buttons",
         ),
     )
