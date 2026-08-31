@@ -44,14 +44,21 @@ regions: list[str] = df[i18n("经济体")].drop_nulls().to_list()
 # Split by '；', strip whitespace, flatten
 all_regions = sorted(set(r.strip() for entry in regions for r in entry.split(i18n("；"))))
 
-# Policy types are multi-select values (e.g. "碳市场；信息披露"), so the
-# dropdown lists individual types split from the combined values.
-# "其他" is always included as a valid category even when no data uses it.
-types: list[str] = df[i18n("政策类型")].drop_nulls().to_list()
-all_types = sorted(
-    set(t.strip() for entry in types for t in entry.split(i18n("；")))
-    | {i18n("其他")}
-)
+# Canonical policy type taxonomy. CSV values are multi-select (e.g.
+# "碳市场；信息披露"); the dropdown shows the 9 single categories and the
+# filter matches any policy containing the selected category.
+POLICY_TYPES = [
+    "目标与战略",
+    "碳市场",
+    "财政政策",
+    "货币与信贷政策",
+    "界定标准与分类法",
+    "信息披露",
+    "审慎监管与风险管理",
+    "自愿性指引",
+    "其他",
+]
+all_types = [i18n(t) for t in POLICY_TYPES]
 
 # compile ui
 app_ui = ui.page_fluid(
